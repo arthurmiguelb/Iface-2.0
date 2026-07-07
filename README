@@ -1,6 +1,6 @@
 # IFACE - Rede Social em Java
 
-Projeto desenvolvido com o objetivo de praticar Programação Orientada a Objetos (POO) utilizando Java.
+Projeto desenvolvido com o objetivo de praticar os conceitos de Programação Orientada a Objetos (POO) utilizando Java.
 
 ## Funcionalidades
 
@@ -14,12 +14,30 @@ Projeto desenvolvido com o objetivo de praticar Programação Orientada a Objeto
 - Remoção de membros
 - Interface via terminal
 
-## Tecnologias
+## Tecnologias utilizadas
 
 - Java
 - Git
-- Programação Orientada a Objetos
+- Programação Orientada a Objetos (POO)
 
 ## Objetivo
 
-Este projeto faz parte dos meus estudos para desenvolvimento Backend com Java.
+Este projeto foi desenvolvido para consolidar meus conhecimentos em Java e Programação Orientada a Objetos, aplicando conceitos como encapsulamento, composição, organização de classes e separação de responsabilidades.
+
+Além disso, o projeto faz parte da minha preparação para atuar como Desenvolvedor Backend Java.
+
+## Próximas funcionalidades
+
+- [x] Gerenciamento de usuários
+- [x] Sistema de amizades
+- [x] Gerenciamento de comunidades
+- [ ] Sistema de mensagens
+- [ ] Persistência de dados com MySQL
+- [ ] Migração para Spring Boot
+- [ ] API REST
+- [ ] Autenticação com JWT
+- [ ] Testes unitários com JUnit
+
+## Autor
+
+Arthur Miguel

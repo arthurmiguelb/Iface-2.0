@@ -18,7 +18,7 @@ public class Console {
         System.out.println(AMARELO + "[AVISO] " + mensagem + RESET);
     }
 
-    public static void enterContinue(){
+    public static void enterContinue() {
         System.out.println("\nPressione Enter para Continuar...");
     }
 }

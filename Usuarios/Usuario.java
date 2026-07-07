@@ -1,6 +1,9 @@
 package Usuarios;
 
+import Utilidade.Console;
+//import java.io.Console;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Usuario {
     private ArrayList<Usuario> amigos;
@@ -84,16 +87,21 @@ public class Usuario {
             throw new IllegalArgumentException("O usuário não pode adicionar a si mesmo como amigo.\n");
         }
         amigos.add(amigo);
+
     }
 
     public void aceitarPedidoAmizade(Usuario amigo) {
+        Scanner scan = new Scanner(System.in);
         if (!pedidosAmizade.contains(amigo)) {
             throw new IllegalArgumentException("O usuário não solicitou amizade.\n");
         }
         this.adicionarAmigo(amigo);
         amigo.adicionarAmigo(this);
-
         pedidosAmizade.remove(amigo);
+        Console.sucesso("Usuário adicionado como amigo!\n");
+        Console.enterContinue();
+        scan.nextLine();
+        return;
     }
 
     public void enviarPedidoAmizade(Usuario amigo) {
@@ -110,10 +118,14 @@ public class Usuario {
     }
 
     public void recusarPedidoAmizade(Usuario amigo) {
+        Scanner scan = new Scanner(System.in);
         if (!pedidosAmizade.contains(amigo)) {
             throw new IllegalArgumentException("O usuário não solicitou amizade.\n");
         }
         pedidosAmizade.remove(amigo);
+        Console.sucesso("Amizade recusada com sucesso!");
+        Console.enterContinue();
+        scan.nextLine();
     }
 
     public ArrayList<Usuario> listarPedidosAmizade() {
@@ -129,7 +141,7 @@ public class Usuario {
         this.email = email;
         this.numeroTelefone = numeroTelefone;
         return this;
-        
+
     }
 
     public void adicionarComunidade(Comunidade comunidade) {

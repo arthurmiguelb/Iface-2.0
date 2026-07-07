@@ -87,11 +87,11 @@ public class Interface {
         System.out.println("[0] Voltar");
     }
 
-    public static void amigos(){
+    public static void amigos() {
         System.out.println("========================================================");
         System.out.println("                          AMIGOS");
         System.out.println("========================================================");
-        System.out.println("[1] Listar meu amigos");
+        System.out.println("[1] Listar meus amigos");
         System.out.println("[2] Enviar solicitação de amizade");
         System.out.println("[3] Listar solicitações pendentes");
         System.out.println("[4] Aceitar Solicitação");
@@ -109,7 +109,6 @@ public class Interface {
         System.out.println("[2] Criar Comunidade");
 
         System.out.println("[0] Voltar");
-
 
     }
 }

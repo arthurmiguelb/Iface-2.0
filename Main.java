@@ -9,20 +9,16 @@ public class Main {
         Sistema sistema = new Sistema(); // iniando sistema'
         Menu menu = new Menu(sistema); // chamando menu
         menu.iniciar();
-        
-        
-        
-        
-        
-        
-        
-        // Usuario ADM_Comu = new Usuario("adm", "adm12", "senha1 ", "adm@example.com", "111111111");
-        // Comunidade comunidade = new Comunidade("Comunidade Teste", "Descrição da Comunidade Teste", ADM_Comu);
+
+        // Usuario ADM_Comu = new Usuario("adm", "adm12", "senha1 ", "adm@example.com",
+        // "111111111");
+        // Comunidade comunidade = new Comunidade("Comunidade Teste", "Descrição da
+        // Comunidade Teste", ADM_Comu);
         // Criando usuários + testes de amizade
         // testarCadastroUsuario(sistema);
         // testarUsuarioDuplicado(sistema);
         // testarPedidoAmizade(sistema);
-        //Criando comunidade
+        // Criando comunidade
         // testarCriacaoComunidade(sistema, ADM_Comu);
         // testarPedirParaEntrarNaComunidade(sistema);
 
@@ -279,7 +275,8 @@ public class Main {
 
     }
 
-    public static void testarRemoverMembroComunidade(Sistema sistema, Comunidade comunidade, Usuario administrador, Usuario usuarioRemovido) {
+    public static void testarRemoverMembroComunidade(Sistema sistema, Comunidade comunidade, Usuario administrador,
+            Usuario usuarioRemovido) {
         System.out.println("\nTestando remoção de membro da comunidade...\n");
         try {
             comunidade.removeMembro(usuarioRemovido, administrador);
@@ -293,7 +290,7 @@ public class Main {
         for (Usuario membro : membros) {
             System.out.println(" - " + membro.getNome() + " (" + membro.getLogin() + ")");
         }
-        
+
     }
 
 }

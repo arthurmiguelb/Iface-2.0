@@ -19,6 +19,7 @@ public class Menu {
         boolean executando = true;
         while (executando) {
             try {
+                Interface.limparTela();
                 Interface.iface();
                 Interface.inial();
                 Scanner scanner = new Scanner(System.in);
@@ -73,13 +74,18 @@ public class Menu {
                         break;
                     case 5:
                         usuarioLogado = null;
-                        Console.sucesso("Deslogado com sucesso.");
-                        executando = false;
+                        Scanner scanner2 = new Scanner(System.in);
+                        Interface.limparTela();
+                        Console.sucesso("Deslogado com sucesso.\n");
+                        Console.enterContinue();
+                        scanner2.nextLine();
+                        iniciar();
 
                         break;
                     case 0:
                         executando = false;
                         break;
+
                     default:
                         Console.erro("Opção inválida. Tente novamente.");
                 }
@@ -130,6 +136,22 @@ public class Menu {
                     break;
                 case 2:
                     enviarAmizade();
+
+                    break;
+                case 3:
+                    listarSolicitacoes();
+
+                    break;
+
+                case 4:
+                    aceitarSolicitacoes();
+
+                    break;
+
+                case 5:
+                    recusarSolicitacoes();
+
+                    break;
                 case 0:
                     menuLogado();
                     break;
@@ -171,6 +193,8 @@ public class Menu {
         try {
             sistema.criarUsuario(novoUsuario);
             Console.sucesso("Usuário criado com sucesso!");
+            Console.enterContinue();
+            scanner.nextLine();
             this.usuarioLogado = novoUsuario; // Loga o usuário recém-criado
         } catch (IllegalArgumentException e) {
             Console.erro(e.getMessage());
@@ -188,7 +212,7 @@ public class Menu {
         try {
             usuarioLogado.editarPerfil(nome, email, telefone);
             Console.sucesso("Usuário editado com sucesso!");
-            System.out.println("\nPressione ENTER para continuar...");
+            Console.enterContinue();
             scanner.nextLine();
 
         } catch (IllegalArgumentException e) {
@@ -211,12 +235,101 @@ public class Menu {
         Interface.limparTela();
         System.out.println("==========MEUS AMIGOS==========");
         for (Usuario amigo : amigos) {
-            System.out.println("- " + amigo.getNome() + "(" + amigo.getLogin() + ")");
+            System.out.println("- " + amigo.getNome() + " (" + amigo.getLogin() + ")");
+        }
+        Console.enterContinue();
+        scanner.nextLine();
+        return;
+    }
+
+    public void enviarAmizade() {
+        ArrayList<Usuario> amigos = usuarioLogado.listarAmigos();
+        Scanner scanner = new Scanner(System.in);
+        Interface.limparTela();
+        System.out.println("\n");
+        System.out.println("Digite o Login do usuário que deseja enviar solicitação de amizade:");
+        String nome_amigo = scanner.nextLine();
+        Usuario amigo = sistema.procurarUsuarioPorLogin(nome_amigo);
+        if (amigo != null) {
+            usuarioLogado.enviarPedidoAmizade(amigo);
+            Interface.limparTela();
+            Console.sucesso("Pedido de amizade enviado!");
+            scanner.nextLine();
+            Console.enterContinue();
+        } else {
+            Interface.limparTela();
+            Console.erro("Usuário não encontrado");
+            Console.enterContinue();
+            scanner.nextLine();
+            menuAmigos();
         }
     }
 
-    public void enviarAmizade(){
-        
+    public void listarSolicitacoes() {
+        ArrayList<Usuario> solici = usuarioLogado.listarPedidosAmizade();
+        Scanner scanner = new Scanner(System.in);
+        if (solici.isEmpty()) {
+            Interface.limparTela();
+            Console.aviso("Você não possui Pedidos");
+            Console.enterContinue();
+            scanner.nextLine();
+            return;
+        }
+        for (Usuario solicita : solici) {
+            System.out.println("Nome: " + solicita.getNome());
+            System.out.println("Login: " + solicita.getLogin());
+        }
+        Console.enterContinue();
+        scanner.nextLine();
+        return;
+    }
+
+    public void aceitarSolicitacoes() {
+        ArrayList<Usuario> solictList = usuarioLogado.listarPedidosAmizade();
+        Scanner scanner = new Scanner(System.in);
+
+        if (solictList.isEmpty()) {
+            Interface.limparTela();
+            Console.aviso("Você não possui pedidos de amizade\n");
+            Console.enterContinue();
+            scanner.nextLine();
+            return;
+        }
+        Interface.limparTela();
+        System.out.println("Solicitações pendentes:\n");
+        for (Usuario solicitacoes : solictList) {
+            System.out.println("Nome: " + solicitacoes.getNome());
+            System.out.println("Login: " + solicitacoes.getLogin());
+        }
+        System.out.println("\n");
+        System.out.println("Digite o Login do usuário que deseja aceitar:");
+        String login = scanner.nextLine();
+        Usuario login1 = sistema.procurarUsuarioPorLogin(login);
+        usuarioLogado.aceitarPedidoAmizade(login1);
+    }
+
+    public void recusarSolicitacoes() {
+        ArrayList<Usuario> solictList = usuarioLogado.listarPedidosAmizade();
+        Scanner scanner = new Scanner(System.in);
+
+        if (solictList.isEmpty()) {
+            Interface.limparTela();
+            Console.aviso("Você não possui pedidos de amizade\n");
+            Console.enterContinue();
+            scanner.nextLine();
+            return;
+        }
+        Interface.limparTela();
+        System.out.println("Solicitações pendentes:\n");
+        for (Usuario solicitacoes : solictList) {
+            System.out.println("Nome: " + solicitacoes.getNome());
+            System.out.println("Login: " + solicitacoes.getLogin());
+        }
+        System.out.println("\n");
+        System.out.println("Digite o Login do usuário que deseja recusar:");
+        String login = scanner.nextLine();
+        Usuario login1 = sistema.procurarUsuarioPorLogin(login);
+        usuarioLogado.recusarPedidoAmizade(login1);
     }
 
 }

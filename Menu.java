@@ -128,6 +128,8 @@ public class Menu {
                     listarAmigos();
 
                     break;
+                case 2:
+                    enviarAmizade();
                 case 0:
                     menuLogado();
                     break;
@@ -211,6 +213,10 @@ public class Menu {
         for (Usuario amigo : amigos) {
             System.out.println("- " + amigo.getNome() + "(" + amigo.getLogin() + ")");
         }
+    }
+
+    public void enviarAmizade(){
+        
     }
 
 }

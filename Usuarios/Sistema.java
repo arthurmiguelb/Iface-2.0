@@ -20,7 +20,7 @@ public class Sistema {
         return usuarios;
     }
 
-    public ArrayList<Comunidade> getComunidades() {
+    public ArrayList<Comunidade> listaComunidades() {
         return comunidades;
     }
 
@@ -104,6 +104,16 @@ public class Sistema {
         for (Usuario usuario : usuarios) {
             usuario.removerListaComunidade(comunidade);
         }
+    }
+
+    public ArrayList<Comunidade> listaComunidadesDoAdm(Usuario adm){
+        ArrayList<Comunidade> comunidadesAdm = new ArrayList<>(); 
+        for(Comunidade comunidade : comunidades){
+            if(comunidade.getAdministrador().equals(adm)){
+                comunidadesAdm.add(comunidade);
+            }
+        }
+        return comunidadesAdm;
     }
 
 }

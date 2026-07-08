@@ -208,10 +208,10 @@ public class Main {
             System.out.println(" - " + solicitante.getNome() + " (" + solicitante.getLogin() + ")");
         }
         testarSolicitacaoEntradaDuplicada(comunidade, usuarioSolicitante);
-        testarRecusarSolicitacaoEntrada(comunidade, usuarioSolicitante);
+        testarRecusarSolicitacaoEntrada(comunidade, usuarioSolicitante, admComu);
         comunidade.addSolicitacaoEntrada(usuarioSolicitante);
-        testarAceitarSolicitacaoEntrada(comunidade, usuarioSolicitante);
-        testarAceitarSolicitacaoEntradaDuplicada(comunidade, usuarioSolicitante);
+        testarAceitarSolicitacaoEntrada(comunidade, usuarioSolicitante, admComu);
+        testarAceitarSolicitacaoEntradaDuplicada(comunidade, usuarioSolicitante, admComu);
         testarRemoverMembroComunidade(sistema, comunidade, admComu, usuarioSolicitante);
     }
 
@@ -226,7 +226,7 @@ public class Main {
         System.out.println("\n----------------------------------------------------\n");
     }
 
-    public static void testarRecusarSolicitacaoEntrada(Comunidade comunidade, Usuario usuarioSolicitante) {
+    public static void testarRecusarSolicitacaoEntrada(Comunidade comunidade, Usuario usuarioSolicitante, Usuario adm) {
         System.out.println("\nTestando recusa de solicitação de entrada na comunidade...\n");
         try {
             comunidade.removeSolicitacaoEntrada(usuarioSolicitante);
@@ -246,10 +246,10 @@ public class Main {
         }
     }
 
-    public static void testarAceitarSolicitacaoEntrada(Comunidade comunidade, Usuario usuarioSolicitante) {
+    public static void testarAceitarSolicitacaoEntrada(Comunidade comunidade, Usuario usuarioSolicitante, Usuario admUsuario) {
         System.out.println("\nTestando aceitação de solicitação de entrada na comunidade...\n");
         try {
-            comunidade.aceitarSolicitacao(usuarioSolicitante);
+            comunidade.aceitarSolicitacao(usuarioSolicitante, admUsuario);
             System.out.println("Solicitação de entrada na comunidade aceita com sucesso.\n");
         } catch (IllegalArgumentException e) {
             System.out.println("Erro ao aceitar solicitação de entrada na comunidade: \n" + e.getMessage());
@@ -262,10 +262,10 @@ public class Main {
         }
     }
 
-    public static void testarAceitarSolicitacaoEntradaDuplicada(Comunidade comunidade, Usuario usuarioSolicitante) {
+    public static void testarAceitarSolicitacaoEntradaDuplicada(Comunidade comunidade, Usuario usuarioSolicitante, Usuario admUsuario) {
         System.out.println("\nTestando aceitação de solicitação de entrada duplicada na comunidade...\n");
         try {
-            comunidade.aceitarSolicitacao(usuarioSolicitante);
+            comunidade.aceitarSolicitacao(usuarioSolicitante, admUsuario);
             System.out.println("Erro: Solicitação de entrada duplicada aceita com sucesso.\n");
         } catch (IllegalArgumentException e) {
             System.out.println(

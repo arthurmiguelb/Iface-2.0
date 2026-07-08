@@ -63,6 +63,7 @@ public class Comunidade {
     public void addMembro(Usuario usuario) {
         if (!membros.contains(usuario)) {
             membros.add(usuario);
+            usuario.adicionarComunidade(this);
         }
     }
 
@@ -76,6 +77,7 @@ public class Comunidade {
         }
 
         membros.remove(usuarioRemovido);
+        usuarioRemovido.removerListaComunidade(this);
     }
 
     public void addSolicitacaoEntrada(Usuario usuario) {
@@ -92,15 +94,17 @@ public class Comunidade {
         solicitacoesEntrada.remove(usuario);
     }
 
-    public void aceitarSolicitacao(Usuario usuario) {
-        if (!solicitacoesEntrada.contains(usuario) && membros.contains(usuario)) {
+    public void aceitarSolicitacao(Usuario usuario, Usuario usuarioAprovado) {
+        if (!solicitacoesEntrada.contains(usuarioAprovado) && membros.contains(usuarioAprovado)) {
             throw new IllegalArgumentException("O usuário ja é membro da comunidade.\n");
         }
-        if (!solicitacoesEntrada.contains(usuario)) {
+        if (!solicitacoesEntrada.contains(usuarioAprovado)) {
             throw new IllegalArgumentException("O usuário não solicitou entrada na comunidade.\n");
         }
-        addMembro(usuario);
-        removeSolicitacaoEntrada(usuario);
+        if(!usuario.equals(administrador)){
+            throw new IllegalArgumentException("Apenas o administrador pode aceitar a solicitação");
+        }
+        addMembro(usuarioAprovado);
+        removeSolicitacaoEntrada(usuarioAprovado);
     }
-
 }

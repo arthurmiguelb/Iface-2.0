@@ -66,11 +66,11 @@ public class Menu {
                         menuAmigos();
                         break;
                     case 3:
-                        // comunidades();
+                        menuComunidades();
 
                         break;
                     case 4:
-                        // mensagens();
+                        menuMensagens();
                         break;
                     case 5:
                         usuarioLogado = null;
@@ -160,6 +160,84 @@ public class Menu {
 
     }
 
+    public void menuComunidades() {
+        boolean executando = true;
+        while (executando) {
+            Interface.limparTela();
+            Interface.menuComunidade();
+            Scanner scan = new Scanner(System.in);
+            int opcao = scan.nextInt();
+            switch (opcao) {
+                case 1:
+                    listarComunidades();
+                    break;
+                case 2:
+                    criarComunidade();
+                    break;
+                case 3:
+                    administrarComunidade();
+
+                    break;
+                case 4:
+                    solicitaComunidade();
+
+                    break;
+                case 5:
+                    return;
+
+            }
+        }
+
+    }
+
+    public void menuAdmComu(Comunidade selecionada) {
+        Scanner scan = new Scanner(System.in);
+        Interface.limparTela();
+        System.out.println("========================================================");
+        System.out.println("Comunidade: " + selecionada.getNomeComunidade());
+        System.out.println("========================================================");
+        Interface.menuAdmComunidade();
+        int opcao = scan.nextInt();
+        switch (opcao) {
+            case 1:
+                listarMembrosComunidade(selecionada);
+                break;
+            case 2:
+                aceitarMembrosComunidade(selecionada);
+                break;
+            case 3:
+                recusarSoliciMembrosComunidade(selecionada);
+                break;
+            case 4:
+                removerMembroComunidade(selecionada);
+                break;
+            case 5:
+                excluirComunidade(selecionada);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void menuMensagens() {
+        Interface.limparTela();
+        Interface.menuMensagens();
+        Scanner scan = new Scanner(System.in);
+        int opt = scan.nextInt();
+        switch (opt) {
+            case 1:
+                exibirMensagens();
+                break;
+            case 2:
+                enviarMensagens();
+                break;
+
+            default:
+                break;
+        }
+    }
+
     public void fazerLogin() {
         Scanner scanner = new Scanner(System.in);
         Console.aviso("Digite o login do usuário:");
@@ -173,6 +251,8 @@ public class Menu {
             menuLogado(); // Chama o menu logado após o login bem-sucedido
         } catch (IllegalArgumentException e) {
             Console.erro(e.getMessage());
+            Console.enterContinue();
+            scanner.nextLine();
         }
     }
 
@@ -251,11 +331,18 @@ public class Menu {
         String nome_amigo = scanner.nextLine();
         Usuario amigo = sistema.procurarUsuarioPorLogin(nome_amigo);
         if (amigo != null) {
-            usuarioLogado.enviarPedidoAmizade(amigo);
-            Interface.limparTela();
-            Console.sucesso("Pedido de amizade enviado!");
-            scanner.nextLine();
-            Console.enterContinue();
+            try {
+
+                usuarioLogado.enviarPedidoAmizade(amigo);
+                Interface.limparTela();
+                Console.sucesso("Pedido de amizade enviado!");
+                scanner.nextLine();
+                Console.enterContinue();
+            } catch (IllegalArgumentException e) {
+                Console.erro(e.getMessage());
+                scanner.nextLine();
+                Console.enterContinue();
+            }
         } else {
             Interface.limparTela();
             Console.erro("Usuário não encontrado");
@@ -275,9 +362,13 @@ public class Menu {
             scanner.nextLine();
             return;
         }
+        Interface.limparTela();
+        Interface.minhasSolicitacoes();
         for (Usuario solicita : solici) {
             System.out.println("Nome: " + solicita.getNome());
             System.out.println("Login: " + solicita.getLogin());
+            System.out.println("-------------------------------");
+
         }
         Console.enterContinue();
         scanner.nextLine();
@@ -296,10 +387,12 @@ public class Menu {
             return;
         }
         Interface.limparTela();
+        Interface.minhasSolicitacoes();
         System.out.println("Solicitações pendentes:\n");
         for (Usuario solicitacoes : solictList) {
             System.out.println("Nome: " + solicitacoes.getNome());
             System.out.println("Login: " + solicitacoes.getLogin());
+            System.out.println("-------------------------------");
         }
         System.out.println("\n");
         System.out.println("Digite o Login do usuário que deseja aceitar:");
@@ -324,6 +417,8 @@ public class Menu {
         for (Usuario solicitacoes : solictList) {
             System.out.println("Nome: " + solicitacoes.getNome());
             System.out.println("Login: " + solicitacoes.getLogin());
+            System.out.println("-------------------------------");
+
         }
         System.out.println("\n");
         System.out.println("Digite o Login do usuário que deseja recusar:");
@@ -332,4 +427,318 @@ public class Menu {
         usuarioLogado.recusarPedidoAmizade(login1);
     }
 
+    public void listarComunidades() {
+        ArrayList<Comunidade> comunidades = usuarioLogado.listaMinhasComunidades();
+        Scanner scanner = new Scanner(System.in);
+        if (comunidades.isEmpty()) {
+            Interface.limparTela();
+            Console.aviso("Você não possui Comunidades");
+            Console.enterContinue();
+            scanner.nextLine();
+            return;
+        }
+        Interface.limparTela();
+        Interface.comunidadeGeral();
+        for (Comunidade comuinidadess : comunidades) {
+            System.out.println("Nome: " + comuinidadess.getNomeComunidade());
+            System.out.println("Descrição: " + comuinidadess.getDescricaoComunidade());
+            System.out.println("-------------------------------");
+
+        }
+        Console.enterContinue();
+        scanner.nextLine();
+        return;
+    }
+
+    public void criarComunidade() {
+        Scanner scan = new Scanner(System.in);
+        String nomeComu;
+        String descComu;
+        Interface.limparTela();
+        System.out.println("Digite o nome da comunidade:");
+        nomeComu = scan.nextLine();
+        System.out.println("Digite a descrição da comunidade:");
+        descComu = scan.nextLine();
+        try {
+            Interface.limparTela();
+            sistema.criarComunidade(nomeComu, descComu, usuarioLogado);
+            Console.sucesso("Comunidade criada com sucesso!");
+            Console.enterContinue();
+            scan.nextLine();
+        } catch (IllegalArgumentException e) {
+            Console.erro(e.getMessage());
+            Console.enterContinue();
+            scan.nextLine();
+        }
+    }
+
+    public void solicitaComunidade() {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Comunidade> todasComunidades = sistema.listaComunidades();
+        Interface.limparTela();
+        System.out.println("Todas comunidades disponíveis:\n");
+        System.out.println("-------------------------------");
+        for (Comunidade comunidaes : todasComunidades) {
+            System.out.println("Nome: " + comunidaes.getNomeComunidade());
+            System.out.println("descrição: " + comunidaes.getNomeComunidade());
+        }
+        System.out.println("-------------------------------\n");
+        System.out.println("Digite o nome da comunidade que deseja solicitar entrada:");
+        String nomeComunidade = scanner.nextLine();
+        Comunidade comunidade = sistema.procurarComunidadePorNome(nomeComunidade);
+        try {
+            if (comunidade != null) {
+                comunidade.addSolicitacaoEntrada(usuarioLogado);
+                Interface.limparTela();
+                Console.sucesso("Solicitação enviada com sucesso!");
+                Console.enterContinue();
+                scanner.nextLine();
+                return;
+            }
+        } catch (IllegalArgumentException e) {
+            Console.erro(e.getMessage());
+            Console.enterContinue();
+            scanner.nextLine();
+            return;
+        }
+        Console.erro("Comunidade não encontrada!");
+        Console.enterContinue();
+        scanner.nextLine();
+        return;
+    }
+
+    public void administrarComunidade() {
+        Scanner scan = new Scanner(System.in);
+        ArrayList<Comunidade> comunidadesAdm = sistema.listaComunidadesDoAdm(usuarioLogado);
+        Comunidade selecionada;
+        if (comunidadesAdm.isEmpty()) {
+            Interface.limparTela();
+            Console.erro("Você não administra nenhuma comunidade");
+            Console.enterContinue();
+            scan.nextLine();
+            return;
+        }
+        Interface.limparTela();
+        Interface.comunidadeGeral();
+        System.out.println("Selecione a comunidade que deseja administrar: \n");
+        for (int i = 0; i < comunidadesAdm.size(); i++) {
+            System.out.println("[" + (i + 1) + "] " + comunidadesAdm.get(i).getNomeComunidade());
+        }
+        int opcao = scan.nextInt() - 1;
+        selecionada = comunidadesAdm.get(opcao);
+        menuAdmComu(selecionada);
+    }
+
+    public void listarMembrosComunidade(Comunidade selecionada) {
+        Scanner scan = new Scanner(System.in);
+        ArrayList<Usuario> membros;
+        membros = selecionada.listarMembros();
+        Interface.limparTela();
+        System.out.println("========================================================");
+        System.out.println("Comunidade: " + selecionada.getNomeComunidade());
+        System.out.println("========================================================\n");
+        System.out.println("Membros da comunidade:");
+        for (Usuario membro : membros) {
+            System.out.println("--------------------------------");
+            System.out.println("Nome: " + membro.getNome());
+            System.out.println("Login: " + membro.getLogin());
+            System.out.println("--------------------------------");
+        }
+        Console.enterContinue();
+        scan.nextLine();
+        menuAdmComu(selecionada);
+    }
+
+    public void aceitarMembrosComunidade(Comunidade selecionada) {
+        Scanner scan = new Scanner(System.in);
+        ArrayList<Usuario> solicita = selecionada.listarSolicitacoesEntradaComunidade();
+        if (!solicita.isEmpty()) {
+            Interface.limparTela();
+            System.out.println("========================================================");
+            System.out.println("Comunidade: " + selecionada.getNomeComunidade());
+            System.out.println("========================================================\n");
+            System.out.println("Solicitações comunidade:");
+            for (Usuario membro : solicita) {
+                System.out.println("--------------------------------");
+                System.out.println("Nome: " + membro.getNome());
+                System.out.println("Login: " + membro.getLogin());
+                System.out.println("--------------------------------");
+            }
+            System.out.println("Digite o login do usuário que deseja aceitar: ");
+            String selecionado = scan.nextLine();
+            Usuario oSelecionado = sistema.procurarUsuarioPorLogin(selecionado);
+            try {
+                selecionada.aceitarSolicitacao(usuarioLogado, oSelecionado);
+                Console.sucesso("Usuário aceito na comunidade!");
+                Console.enterContinue();
+                scan.nextLine();
+                menuAdmComu(selecionada);
+                return;
+
+            } catch (IllegalArgumentException e) {
+                Console.erro(e.getMessage());
+                Console.enterContinue();
+                scan.nextLine();
+                menuAdmComu(selecionada);
+                return;
+            }
+
+        } else if (solicita.isEmpty()) {
+            Interface.limparTela();
+            Console.aviso("A comunidade não possui solicitações!");
+            Console.enterContinue();
+            scan.nextLine();
+            menuAdmComu(selecionada);
+        }
+
+    }
+
+    public void recusarSoliciMembrosComunidade(Comunidade selecionada) {
+        Scanner scan = new Scanner(System.in);
+        ArrayList<Usuario> solicita = selecionada.listarSolicitacoesEntradaComunidade();
+        if (!solicita.isEmpty()) {
+            Interface.limparTela();
+            System.out.println("========================================================");
+            System.out.println("Comunidade: " + selecionada.getNomeComunidade());
+            System.out.println("========================================================\n");
+            System.out.println("Solicitações comunidade:");
+            for (Usuario membro : solicita) {
+                System.out.println("--------------------------------");
+                System.out.println("Nome: " + membro.getNome());
+                System.out.println("Login: " + membro.getLogin());
+                System.out.println("--------------------------------");
+            }
+            System.out.println("Digite o login do usuário que deseja recusar: ");
+            String selecionado = scan.nextLine();
+            Usuario oSelecionado = sistema.procurarUsuarioPorLogin(selecionado);
+            try {
+                selecionada.removeSolicitacaoEntrada(oSelecionado);
+                Console.sucesso("Usuário rejeitado na comunidade!");
+                Console.enterContinue();
+                scan.nextLine();
+                menuAdmComu(selecionada);
+                return;
+
+            } catch (IllegalArgumentException e) {
+                Console.erro(e.getMessage());
+                Console.enterContinue();
+                scan.nextLine();
+                menuAdmComu(selecionada);
+                return;
+            }
+
+        } else if (solicita.isEmpty()) {
+            Interface.limparTela();
+            Console.aviso("A comunidade não possui solicitações!");
+            Console.enterContinue();
+            scan.nextLine();
+            menuAdmComu(selecionada);
+        }
+    }
+
+    public void removerMembroComunidade(Comunidade selecionada) {
+        Scanner scan = new Scanner(System.in);
+        ArrayList<Usuario> membros;
+        membros = selecionada.listarMembros();
+        Interface.limparTela();
+        System.out.println("========================================================");
+        System.out.println("Comunidade: " + selecionada.getNomeComunidade());
+        System.out.println("========================================================\n");
+        System.out.println("Membros da comunidade:");
+        for (Usuario membro : membros) {
+            System.out.println("--------------------------------");
+            System.out.println("Nome: " + membro.getNome());
+            System.out.println("Login: " + membro.getLogin());
+            System.out.println("--------------------------------");
+        }
+        System.out.println("Digite o login do usuário que deseja remover da comunidade: ");
+        String usuarioSelec = scan.nextLine();
+        Usuario selecionado = sistema.procurarUsuarioPorLogin(usuarioSelec);
+        try {
+            Interface.limparTela();
+            selecionada.removeMembro(selecionado, usuarioLogado);
+            Console.sucesso("Usuário removido da comunidade!");
+            Console.enterContinue();
+            scan.nextLine();
+            menuAdmComu(selecionada);
+            return;
+        } catch (IllegalArgumentException e) {
+            Console.erro(e.getMessage());
+            Console.enterContinue();
+            scan.nextLine();
+            menuAdmComu(selecionada);
+            return;
+        }
+    }
+
+    public void excluirComunidade(Comunidade selecionada) {
+        Scanner scan = new Scanner(System.in);
+        Scanner scann = new Scanner(System.in);
+
+        Interface.limparTela();
+        System.out.println("Certeza que deseja excluir comunidade?");
+        System.out.println("[1] Sim");
+        System.out.println("[2] Não");
+        int opt = scan.nextInt();
+        if (opt == 1) {
+            Interface.limparTela();
+            sistema.removerComunidade(selecionada, usuarioLogado);
+            Console.sucesso("Comnunidade excluida com sucesso!");
+            Console.enterContinue();
+            scann.nextLine();
+            menuComunidades();
+        }
+        menuAdmComu(selecionada);
+        return;
+    }
+
+    public void enviarMensagens() {
+        Scanner scan = new Scanner(System.in);
+        ArrayList<Usuario> amigos = usuarioLogado.listarAmigos();
+        Interface.limparTela();
+        if (!amigos.isEmpty()) {
+            System.out.println("Listando todos os seus amigos\n");
+            System.out.println("--------------------------------");
+            for (Usuario amigo : amigos) {
+                System.out.println("Nome: " + amigo.getNome());
+                System.out.println("Login: " + amigo.getLogin());
+            }
+            System.out.println("--------------------------------\n");
+            System.out.println("Digite o login do amigo que deseja enviar mensagem:");
+            String amigo = scan.nextLine();
+            Usuario amigoM = usuarioLogado.procurarAmigoPorLogin(amigo);
+            if (amigoM != null) {
+                Interface.limparTela();
+                System.out.println("Digite a mensagem que deseja Enviar: ");
+                String mensagem = scan.nextLine();
+                amigoM.receberMensagem("- " + usuarioLogado.getNome() + ": " + mensagem);
+                Console.sucesso("Mensagem enviada com sucesso!");
+                Console.enterContinue();
+                scan.nextLine();
+                return;
+            } else if (amigoM == null) {
+                Console.erro("Amigo não encontrado!");
+                Console.enterContinue();
+                scan.nextLine();
+                return;
+            }
+        }
+    }
+
+    public void exibirMensagens() {
+        ArrayList<String> mensagens = usuarioLogado.listaMinhasMensagens();
+        Scanner scan = new Scanner(System.in);
+        Interface.limparTela();
+        if (!mensagens.isEmpty()) {
+            for (String mensagem : mensagens) {
+                System.out.println(mensagem);
+            }
+            Console.enterContinue();
+            scan.nextLine();
+            return;
+        }
+        Console.aviso("Você não possui mensagens!");
+        Console.enterContinue();
+        scan.nextLine();
+    }
 }

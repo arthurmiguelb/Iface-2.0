@@ -13,12 +13,12 @@ public class Interface {
         System.out.println("""
                 +------------------------------------------------------+
                 |                                                      |
-                |   ██╗███████╗ █████╗  ██████╗███████╗                |
-                |   ██║██╔════╝██╔══██╗██╔════╝██╔════╝                |
-                |   ██║█████╗  ███████║██║     █████╗                  |
-                |   ██║██╔══╝  ██╔══██║██║     ██╔══╝                  |
-                |   ██║██║     ██║  ██║╚██████╗███████╗                |
-                |   ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝╚══════╝                |
+                |          ██╗███████╗ █████╗  ██████╗███████╗         |
+                |          ██║██╔════╝██╔══██╗██╔════╝██╔════╝         |
+                |          ██║█████╗  ███████║██║     █████╗           |
+                |          ██║██╔══╝  ██╔══██║██║     ██╔══╝           |
+                |          ██║██║     ██║  ██║╚██████╗███████╗         |
+                |          ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝╚══════╝         |
                 |                                                      |
                 |             Rede Social em Java - v1.0               |
                 |                                                      |
@@ -107,8 +107,45 @@ public class Interface {
         System.out.println("========================================================");
         System.out.println("[1] Listar minhas comunidades");
         System.out.println("[2] Criar Comunidade");
-
-        System.out.println("[0] Voltar");
+        System.out.println("[3] Administrar comunidade");
+        System.out.println("[4] Enviar solicitação comunidade");
+        System.out.println("[5] Voltar");
 
     }
+
+    public static void menuAdmComunidade() {
+        System.out.println("[1] Listar membros");
+        System.out.println("[2] Aceitar solicitação de membro");
+        System.out.println("[3] Recusar solcitiação membros");
+        System.out.println("[4] Remover membro");
+        System.out.println("[5] Excluir comunidade");
+        System.out.println("[0] Voltar");
+    }
+
+    public static void meusAmigos() {
+        System.out.println("========================================================");
+        System.out.println("                       MEUS AMIGOS");
+        System.out.println("========================================================");
+    }
+
+    public static void minhasSolicitacoes() {
+        System.out.println("========================================================");
+        System.out.println("                  SOLICITAÇÕES DE AMIZADE");
+        System.out.println("========================================================");
+    }
+
+    public static void comunidadeGeral() {
+        System.out.println("========================================================");
+        System.out.println("                     COMUNIDADES");
+        System.out.println("========================================================");
+    }
+
+    public static void menuMensagens() {
+        System.out.println("========================================================");
+        System.out.println("                     MENSAGENS");
+        System.out.println("========================================================");
+        System.out.println("[1] Exibir mensagens");
+        System.out.println("[2] Enviar mensagem");
+    }
+
 }

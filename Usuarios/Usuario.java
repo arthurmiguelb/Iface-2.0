@@ -68,6 +68,14 @@ public class Usuario {
         this.numeroTelefone = numeroTelefone;
     }
 
+    public ArrayList<Comunidade> listaMinhasComunidades(){
+        return new ArrayList<Comunidade>(comunidades);
+    }
+
+    public ArrayList<String> listaMinhasMensagens(){
+        return new ArrayList<String>(mensagens);
+    }
+
     @Override
     public String toString() {
         // TODO Auto-generated method stub
@@ -152,5 +160,19 @@ public class Usuario {
 
     public void removerListaComunidade(Comunidade comunidade) {
         comunidades.remove(comunidade);
+    }
+
+     public Usuario procurarAmigoPorLogin(String login) {
+       // new ArrayList<Usuario>(amigos); 
+        for (Usuario usuario : amigos) {
+            if (usuario.getLogin().equals(login)) {
+                return usuario;
+            }
+        }
+        return null; // Retorna null se o usuário não for encontrado
+    }
+
+    public void receberMensagem(String mensagem){
+        mensagens.add(mensagem);
     }
 }
